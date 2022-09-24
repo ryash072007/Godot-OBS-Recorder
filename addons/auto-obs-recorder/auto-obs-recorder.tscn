@@ -1,0 +1,177 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://addons/auto-obs-recorder/auto-obs-recorder.gd" type="Script" id=1]
+
+[node name="auto-obs-recorder" type="Control"]
+script = ExtResource( 1 )
+
+[node name="delay_obs" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
+[node name="VBoxContainer" type="HBoxContainer" parent="."]
+margin_left = 15.0
+margin_top = 15.0
+margin_right = 434.0
+margin_bottom = 175.0
+
+[node name="HBoxContainer" type="VBoxContainer" parent="VBoxContainer"]
+margin_right = 281.0
+margin_bottom = 160.0
+alignment = 1
+
+[node name="obsConnect" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_right = 281.0
+margin_bottom = 20.0
+text = "Open and Eshtablish Connection with OBS"
+
+[node name="startBtn" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_top = 24.0
+margin_right = 281.0
+margin_bottom = 49.0
+rect_min_size = Vector2( 0, 25 )
+text = "Start Recording"
+
+[node name="pauseBtn" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_top = 53.0
+margin_right = 281.0
+margin_bottom = 78.0
+rect_min_size = Vector2( 0, 25 )
+text = "Pause Recording"
+
+[node name="stopBtn" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_top = 82.0
+margin_right = 281.0
+margin_bottom = 107.0
+rect_min_size = Vector2( 0, 25 )
+text = "Stop Recording"
+
+[node name="saveDataBtn" type="Button" parent="VBoxContainer/HBoxContainer"]
+margin_top = 111.0
+margin_right = 281.0
+margin_bottom = 131.0
+text = "Save Data"
+
+[node name="statusVar" type="RichTextLabel" parent="VBoxContainer/HBoxContainer"]
+margin_top = 135.0
+margin_right = 281.0
+margin_bottom = 160.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Not Recording"
+
+[node name="VSeparator" type="VSeparator" parent="VBoxContainer"]
+margin_left = 285.0
+margin_right = 295.0
+margin_bottom = 160.0
+custom_constants/separation = 10
+
+[node name="Container" type="VBoxContainer" parent="VBoxContainer"]
+margin_left = 299.0
+margin_right = 555.0
+margin_bottom = 160.0
+
+[node name="Port" type="HBoxContainer" parent="VBoxContainer/Container"]
+margin_right = 256.0
+margin_bottom = 24.0
+
+[node name="portText" type="RichTextLabel" parent="VBoxContainer/Container/Port"]
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+text = "Port:"
+scroll_active = false
+
+[node name="portEdit" type="LineEdit" parent="VBoxContainer/Container/Port"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "4455"
+
+[node name="Server" type="HBoxContainer" parent="VBoxContainer/Container"]
+margin_top = 28.0
+margin_right = 256.0
+margin_bottom = 52.0
+
+[node name="serverText" type="RichTextLabel" parent="VBoxContainer/Container/Server"]
+margin_right = 126.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "Server:"
+scroll_active = false
+
+[node name="serverEdit" type="LineEdit" parent="VBoxContainer/Container/Server"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+text = "127.0.0.1"
+
+[node name="Password" type="HBoxContainer" parent="VBoxContainer/Container"]
+margin_top = 56.0
+margin_right = 256.0
+margin_bottom = 80.0
+rect_min_size = Vector2( 24, 0 )
+
+[node name="passwordText" type="RichTextLabel" parent="VBoxContainer/Container/Password"]
+margin_right = 126.0
+margin_bottom = 24.0
+rect_min_size = Vector2( 0, 24 )
+size_flags_horizontal = 3
+text = "Password:"
+scroll_active = false
+
+[node name="passwordEdit" type="LineEdit" parent="VBoxContainer/Container/Password"]
+margin_left = 130.0
+margin_right = 256.0
+margin_bottom = 24.0
+size_flags_horizontal = 3
+secret = true
+
+[node name="OBS path" type="HBoxContainer" parent="VBoxContainer/Container"]
+margin_top = 84.0
+margin_right = 256.0
+margin_bottom = 104.0
+
+[node name="obsPathText" type="RichTextLabel" parent="VBoxContainer/Container/OBS path"]
+margin_right = 120.0
+margin_bottom = 20.0
+size_flags_horizontal = 3
+text = "OBS Executable Path:"
+scroll_active = false
+
+[node name="obsPathSelector" type="FileDialog" parent="VBoxContainer/Container/OBS path"]
+margin_left = 140.0
+margin_right = 397.0
+margin_bottom = 130.0
+window_title = "Open a File"
+mode = 0
+access = 2
+show_hidden_files = true
+
+[node name="obsSelectorEnabler" type="Button" parent="VBoxContainer/Container/OBS path"]
+margin_left = 124.0
+margin_right = 256.0
+margin_bottom = 20.0
+text = "Choose Exectuable"
+
+[node name="stopOnClose" type="CheckBox" parent="VBoxContainer/Container"]
+margin_top = 108.0
+margin_right = 256.0
+margin_bottom = 132.0
+pressed = true
+text = "Stop Recording when Godot Closes?"
+
+[connection signal="timeout" from="delay_obs" to="." method="_on_delay_obs_timeout"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/obsConnect" to="." method="_on_obsConnect_pressed"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/startBtn" to="." method="start_recording"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/pauseBtn" to="." method="pause_recording"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/stopBtn" to="." method="stop_recording"]
+[connection signal="pressed" from="VBoxContainer/HBoxContainer/saveDataBtn" to="." method="_on_saveDataBtn_pressed"]
+[connection signal="text_changed" from="VBoxContainer/Container/Port/portEdit" to="." method="_on_portEdit_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/Container/Server/serverEdit" to="." method="_on_serverEdit_text_changed"]
+[connection signal="text_changed" from="VBoxContainer/Container/Password/passwordEdit" to="." method="_on_passwordEdit_text_changed"]
+[connection signal="file_selected" from="VBoxContainer/Container/OBS path/obsPathSelector" to="." method="_on_obsPathSelector_file_selected"]
+[connection signal="pressed" from="VBoxContainer/Container/OBS path/obsSelectorEnabler" to="." method="_on_obsSelectorEnabler_pressed"]
